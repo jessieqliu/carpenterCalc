@@ -13,7 +13,7 @@ namespace test1
     {
         static void Main(string[] args)
         {
-            if(args.Length > 0)
+            if (args.Length > 0)
                 Console.WriteLine(args[0]);
 
             string jsonText = File.ReadAllText(args[0]);
@@ -35,10 +35,6 @@ namespace test1
 
         static CCUnit calculate(CCUnit opd1, CCUnit opd2, char optr)
         {
-            int newDenom, newNumer, newWholeNum;
-
-            newDenom = opd1.denominator == opd2.denominator ? opd1.denominator : opd1.denominator * opd2.denominator;
-
 
             return opd1;
         }
@@ -50,6 +46,19 @@ namespace test1
             op2 = num1 > num2 ? num1 : num2;
 
             return 0;
+        }
+
+        static CCUnit decToFrac(float dec)
+        {
+            int integral = (int)decimal.Truncate((decimal)dec);
+            int fraction = (int)(((decimal)dec - decimal.Truncate((decimal)dec)) * 1000);
+
+            float newError = (float)decimal.Truncate((decimal)(fraction / 62.5));
+
+            CCUnit result = new CCUnit(integral, (int)(fraction / 62.5), 16, newError);
+            result.reduce();
+
+            return result;
         }
     }
 }
