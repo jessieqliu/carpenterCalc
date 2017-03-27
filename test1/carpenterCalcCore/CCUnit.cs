@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace test1
 {
-    class CCUnit
+    public class CCUnit
     {
         public CCUnit(int wholeNum, int numerator, int denominator, float error)
         {
@@ -35,7 +35,8 @@ namespace test1
                 return this;
             else
             {
-                CCUnit newUnit = new CCUnit(wholeNum, numerator * newTerm, denominator * newTerm, error);
+                double factor = ((double)newTerm) / ((double)denominator);
+                CCUnit newUnit = new CCUnit(wholeNum, (int)(((double)numerator) * factor), (int)(((double)denominator) * factor), error);
                 return newUnit;
             }
         }
@@ -82,6 +83,22 @@ namespace test1
 
             result.reduce();
             result.changeToProper();
+
+            return result;
+        }
+
+        public static CCUnit operator *(CCUnit left, CCUnit right)
+        {
+            if (right.numerator == 0 && right.wholeNum == 0)
+                return left;
+
+            left.changeToImproper();
+            right.changeToImproper();
+
+            CCUnit result = new CCUnit(0, left.numerator * right.numerator, left.denominator * right.denominator, left.error + right.error);
+
+            result = result.changeTerms(16);
+            result.reduce();
 
             return result;
         }
