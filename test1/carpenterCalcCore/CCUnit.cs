@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace test1
+namespace carpenterCalcCore
 {
     public class CCUnit
     {
@@ -36,10 +36,26 @@ namespace test1
             else
             {
                 double factor = ((double)newTerm) / ((double)denominator);
-                CCUnit newUnit = new CCUnit(wholeNum, (int)(((double)numerator) * factor), (int)(((double)denominator) * factor), error);
+                CCUnit newUnit = new CCUnit(wholeNum, (int)(((double)numerator) * factor), newTerm, error);
                 return newUnit;
             }
         }
+
+        //public static CCUnit calculate(char optr, CCUnit right, float metadata)
+        //{
+        //    switch(optr)
+        //    {
+        //        case '+':
+        //            return this + right;
+
+        //        case '-':
+        //            return this - right;
+
+        //        case '*':
+
+
+        //    }
+        //}
 
         public static CCUnit operator +(CCUnit left, CCUnit right)
         {
@@ -48,7 +64,7 @@ namespace test1
             CCUnit newLeft = left.changeTerms(16);
             CCUnit newRight = right.changeTerms(16);
 
-            CCUnit result = new CCUnit(0, left.numerator + right.numerator, 16, left.error + right.error);
+            CCUnit result = new CCUnit(0, newLeft.numerator + newRight.numerator, 16, left.error + right.error);
 
             result.reduce();
             result.changeToProper();

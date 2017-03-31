@@ -1,4 +1,7 @@
-﻿using System;
+﻿using carpenterCalcCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -43,8 +46,29 @@ namespace CarpCalcWeb.Controllers
             {
                 string s = reader.ReadToEnd();
 
-                c.Response.Write(s);
-                c.Response.End();
+                try
+                {
+                    Request r1 = JsonConvert.DeserializeObject<Request>(s);
+                    CCUnit result = null;
+                    if (r1.calcOperator == '+')
+                    {
+                        if (r1.CCUnits.Length == 2)
+                            result = r1.CCUnits[0] + r1.CCUnits[1];
+                    }
+
+                    if (result != null)
+                    {
+                        s = JsonConvert.SerializeObject(result, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
+                    }
+                    else
+                        s = "ERROR: Invalid Input Format.";
+
+                    c.Response.Write(s);
+                    c.Response.End();
+                } catch(Exception e)
+                {
+
+                }
             }
         }
 

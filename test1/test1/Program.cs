@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using carpenterCalcCore;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,12 @@ namespace test1
 
               Console.WriteLine(newJson);*/
 
-            CCUnit test1 = new CCUnit(0, 1, 4, 0);
-
-            CCUnit test2 = test1.changeTerms(16);
-
-            string newJson = JsonConvert.SerializeObject(test1, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() });
-
-            Console.WriteLine(newJson);
+            string jText = File.ReadAllText(args[0]);
+            Request r1 = JsonConvert.DeserializeObject<Request>(jText);
+            Console.WriteLine(r1.calcOperator);
+            Console.WriteLine("{0} {1} {2} {3}", r1.CCUnits[0].wholeNum, r1.CCUnits[0].numerator, r1.CCUnits[0].denominator, r1.CCUnits[0].error);
+            Console.WriteLine("{0} {1} {2} {3}", r1.CCUnits[1].wholeNum, r1.CCUnits[1].numerator, r1.CCUnits[1].denominator, r1.CCUnits[1].error);
+            Console.WriteLine(r1.metadata);
 
 
         }
